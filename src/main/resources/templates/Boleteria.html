@@ -104,6 +104,7 @@
         .info-pelicula p strong {
             color: #8B0000;
         }
+
     </style>
 </head>
 <body>
@@ -134,6 +135,9 @@
 
         <p><strong>Horario:</strong> <span th:text="${p.horario}"></span></p>
         <p><strong>Sala:</strong> <span th:text="${p.sala}"></span></p>
+        <a th:href="@{/butacas(pelicula=${p.titulo})}">
+            <button style="margin-top: 10px;">Elegir Butacas</button>
+        </a>
     </div>
 
 </div> </body>

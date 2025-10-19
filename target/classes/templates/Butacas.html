@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Seleccionar Butacas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            margin-bottom: 30px;
+        }
+        .butacas {
+            display: grid;
+            grid-template-columns: repeat(10, 40px);
+            gap: 10px;
+            justify-content: center;
+        }
+        .butaca {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid white;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .butaca.disponible:hover {
+            background-color: #4caf50;
+        }
+        .ocupada {
+            background-color: #f44336;
+            cursor: not-allowed;
+        }
+        .seleccionada {
+            background-color: #2196f3;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #ff5722;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Selecciona tus Butacas para <span th:text="${pelicula}"></span></h1>
+
+<div class="butacas">
+    <div th:each="b : ${butacas}"
+         class="butaca disponible"
+         th:classappend="${b.ocupada} ? ' ocupada' : ''"
+         th:attr="data-codigo=${b.codigo}"
+         onclick="seleccionar(this)">
+    </div>
+</div>
+
+<button onclick="confirmarSeleccion()">Confirmar Selección</button>
+
+<script>
+    const seleccionadas = [];
+
+    function seleccionar(elem) {
+        if (elem.classList.contains('ocupada')) return;
+        elem.classList.toggle('seleccionada');
+        const codigo = elem.getAttribute('data-codigo');
+        if (seleccionadas.includes(codigo)) {
+            seleccionadas.splice(seleccionadas.indexOf(codigo), 1);
+        } else {
+            seleccionadas.push(codigo);
+        }
+    }
+
+    function confirmarSeleccion() {
+        alert("Butacas seleccionadas: " + seleccionadas.join(", "));
+    }
+</script>
+
+</body>
+</html>
