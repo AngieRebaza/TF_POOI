@@ -10,16 +10,19 @@ public class ServicioWebCine {
     private TreeMap<Integer, Salas> salas;
     private LinkedHashMap<String, Productos> productos;
     private List<BoletaResumen> boleta;
+    private List<Productos> productosSeleccionados;
 
     public ServicioWebCine() {
         this.cartelera = new ArrayList<>();
         this.salas = new TreeMap<>();
         this.productos = new LinkedHashMap<>();
         this.boleta = new ArrayList<>();
+        this.productosSeleccionados = new ArrayList<>();
 
         datosPeliculas();
         datoSalas();
         datosProductos();
+
     }
 
     private void datosPeliculas() {
@@ -48,6 +51,22 @@ public class ServicioWebCine {
         productos.put("B3", new Productos(7.0, "Chicha"));
     }
 
+    public double calcularTotalDulceria() {
+        double total = 0.0;
+        for (Productos p : productos.values()) {
+            total += p.getPrecioSnack();
+        }
+        return total;
+    }
+
+    public double calcularMontoTotal(Set<String> butacasSeleccionadas) {
+        double precioEntradas = butacasSeleccionadas.size() * 15.0;
+        double precioDulceria = calcularTotalDulceria();
+        return precioEntradas + precioDulceria;
+    }
+
+
+
     public List<PeliculasCartelera> getCartelera() {
         return cartelera;
     }
@@ -64,6 +83,14 @@ public class ServicioWebCine {
         return boleta;
     }
 
+    public void agregarProductoSeleccionado(Productos p) {
+        productosSeleccionados.add(p);
+
+    }
+
+    public void
+
+//por ahora no funciona xd dejenlo ahí quiero ver si se puede hacer una compra despues y que las butacas ya compradas no se puedan seleccionar
     public void registrarCompra(BoletaResumen nuevaboleta) {
         boleta.add(nuevaboleta);
     }
