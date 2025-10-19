@@ -36,10 +36,13 @@ public class ServicioWebCine {
     }
 
     private void datosProductos () {
-        productos.put("P1", new Productos(10.0, "popcorn"));
-        productos.put("P2", new Productos(5.0, "Chips"));
-        productos.put("P3", new Productos(8.0, "hotdog"));
-        productos.put("P4", new Productos(9.0, "Muffins"));
+        productos.put("P1", new Productos(10.0, "Popcorn Salada"));
+        productos.put("P2", new Productos(12.0, "Popcorn Dulce"));
+        productos.put("P3", new Productos(14.0, "Popcorn Mixta"));
+
+        productos.put("P4", new Productos(5.0, "Chips"));
+        productos.put("P5", new Productos(8.0, "Hotdog"));
+        productos.put("P6", new Productos(9.0, "Muffins"));
         productos.put("B1", new Productos(3.0, "Agua"));
         productos.put("B2", new Productos(6.0, "Gaseosa"));
         productos.put("B3", new Productos(7.0, "Chicha"));
