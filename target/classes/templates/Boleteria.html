@@ -2,11 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Boletería - Cine Clásico</title>
+    <title>Boletería</title>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lora:wght@400;700&family=Montserrat:wght@700&display=swap');
 
+        /* --- Estilos Generales (Sin cambios) --- */
         body {
             font-family: 'Lora', 'Georgia', serif;
             background-color: #FFFBF0;
@@ -15,7 +16,6 @@
             padding: 20px;
             line-height: 1.6;
         }
-
         h1 {
             font-family: 'Playfair+Display', serif;
             text-align: center;
@@ -25,13 +25,11 @@
             padding-bottom: 10px;
             margin-bottom: 30px;
         }
-
         h2 {
             font-family: 'Playfair+Display', serif;
             color: #333;
             margin-top: 0;
         }
-
         .wrapper-principal {
             display: flex;
             justify-content: center;
@@ -39,7 +37,6 @@
             gap: 30px;
             flex-wrap: wrap;
         }
-
         .tarjeta-clasica {
             background-color: #FFFFFF;
             border: 1px solid #E0E0E0;
@@ -51,14 +48,12 @@
             flex-grow: 1;
             max-width: 450px;
         }
-
         .contenedor-formulario label {
             font-weight: 700;
             color: #555;
             display: block;
             margin-bottom: 5px;
         }
-
         .contenedor-formulario input[type="number"] {
             width: 100%;
             padding: 10px;
@@ -70,7 +65,6 @@
             font-size: 1em;
             box-sizing: border-box;
         }
-
         .btn-rojo {
             display: block;
             text-decoration: none;
@@ -88,21 +82,52 @@
             transition: background-color 0.3s ease;
             box-sizing: border-box;
         }
-
         .btn-rojo:hover {
             background-color: #ff7043;
         }
-
         .btn-volver {
             margin-top: 10px;
         }
-
         .info-pelicula p {
             font-size: 1.1em;
         }
-
         .info-pelicula p strong {
-            color: #8B0000;
+            color: #8b0000;
+        }
+
+
+        .butacas {
+            display: grid;
+            grid-template-columns: repeat(4, 60px);
+            gap: 10px;
+            margin: 15px 0 20px 0;
+            justify-content: center;
+        }
+
+        .butaca {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background-color: #ccc; /* Color disponible */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.8em;
+            font-family: sans-serif;
+            user-select: none; /* Evita que el texto se seleccione */
+            transition: background 0.2s;
+        }
+
+        .butaca.seleccionado {
+            background-color: #8B0000; /* Estilo Clásico */
+            color: white;
+        }
+
+        .butaca.ocupado {
+            background-color: #444;
+            color: white;
+            cursor: not-allowed;
         }
 
     </style>
@@ -117,12 +142,16 @@
         <h2>Comprar Entradas</h2>
         <form th:action="@{'/boleta'}" method="post">
             <label>Cantidad de entradas (Max 20):</label>
-            <input type="number" name="entradas" min="1" max="20" required>
+            <input type="number" name="entradas" id="entradas" min="1" max="20" value="1" required>
 
-            <label>Entradas con descuento (Niños o Adultos Mayores):</label>
-            <input type="number" name="entradasDescuento" min="0" max="20" value="0">
+            <label>Entradas con descuento (Niños o adultos Mayores):</label>
+            <input type="number" name="entradasDescuento" id="entradasDescuento" min="0" max="20">
 
-            <button type="submit" class="btn-rojo">Confirmar Compra</button>
+            <h3>Selecciona las butacas: </h3>
+            <div id="seatGrid" class="butacas"></div>
+
+            <input type="hidden" name="butacasSeleccionada" id="butacasSeleccionadas">
+            <button type="submit" class="btn-rojo">Realizar compra</button>
         </form>
 
         <a href="/cartelera" class="btn-rojo btn-volver"><-- Volver a la Cartelera</a>
@@ -132,13 +161,50 @@
         <h2 th:text="${p.titulo}"></h2>
         <p><strong>Trama:</strong> <span th:text="${p.trama}"></span></p>
         <p><strong>Duración:</strong> <span th:text="${p.duracionMinutos}"></span> minutos</p>
-
         <p><strong>Horario:</strong> <span th:text="${p.horario}"></span></p>
         <p><strong>Sala:</strong> <span th:text="${p.sala}"></span></p>
-        <a th:href="@{/butacas(pelicula=${p.titulo})}">
-            <button style="margin-top: 10px;">Elegir Butacas</button>
-        </a>
+
     </div>
 
-</div> </body>
+</div>
+
+<script>
+    const filas = 5;
+    const columnas = 4;
+    const seatGrid = document.getElementById("seatGrid");
+    const seleccionadas = [];
+
+    const inputEntradas = document.getElementById("entradas");
+    const inputDescuento = document.getElementById("entradasDescuento");
+    for (let i = 0; i < filas; i++) {
+        for (let j = 1; j <= columnas; j++) {
+            const seat = document.createElement("div");
+            const codigo = String.fromCharCode(65 + i) + j;
+            seat.textContent = codigo;
+            seat.classList.add("butaca");
+
+            seat.addEventListener("click", () => {
+                const maxEntradas = (parseInt(inputEntradas.value) || 0) + (parseInt(inputDescuento.value) || 0);
+
+                if (seat.classList.contains("ocupado")) return;
+
+                if (seat.classList.contains("seleccionado")) {
+                    seat.classList.remove("seleccionado");
+                    seleccionadas.splice(seleccionadas.indexOf(codigo), 1);
+                } else if (seleccionadas.length < maxEntradas) {
+                    seat.classList.add("seleccionado");
+                    seleccionadas.push(codigo);
+                } else {
+                    alert("Ya seleccionaste todas tus butacas (" + maxEntradas + "). Ajusta la cantidad de entradas si deseas más.");
+                }
+
+                document.getElementById("butacasSeleccionadas").value = seleccionadas.join(",");
+            });
+
+            seatGrid.appendChild(seat);
+        }
+    }
+</script>
+
+</body>
 </html>
