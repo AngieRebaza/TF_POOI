@@ -24,9 +24,9 @@ public class ServicioWebCine {
 
     private void datosPeliculas() {
 
-        cartelera.add(new PeliculasCartelera("Pelicula 1", "Genero 1", 200));
-        cartelera.add(new PeliculasCartelera("Pelicula 2", "Genero 2", 150));
-        cartelera.add(new PeliculasCartelera("Pelicula 3", "Genero 3", 100));
+        cartelera.add(new PeliculasCartelera("Pelicula 1", "Genero 1", 200, 1, "9:00am"));
+        cartelera.add(new PeliculasCartelera("Pelicula 2", "Genero 2", 150, 2, "3:00pm"));
+        cartelera.add(new PeliculasCartelera("Pelicula 3", "Genero 3", 100, 3, "7:00pm"));
     }
 
     private void datoSalas() {
