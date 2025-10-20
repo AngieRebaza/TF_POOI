@@ -129,6 +129,14 @@
             cursor: not-allowed;
         }
 
+        .botones-finales {
+            max-width: 450px;
+            margin: 30px auto 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
     </style>
 </head>
 <body>
@@ -139,7 +147,7 @@
 
     <div class="contenedor-formulario tarjeta-clasica">
         <h2>Comprar Entradas</h2>
-        <form th:action="@{'/boleta'}" method="post">
+        <form th:action="@{'/boleta'}" method="post" id="boletaForm">
             <label>Entradas estándar (s/12):</label>
             <input type="number" name="entradas" id="entradas" min="1" max="20" value="1" required>
 
@@ -150,10 +158,9 @@
             <div id="seatGrid" class="butacas"></div>
 
             <input type="hidden" name="butacasSeleccionada" id="butacasSeleccionadas">
-            <button type="submit" class="btn-rojo">Realizar compra</button>
+
         </form>
 
-        <a href="/cartelera" class="btn-rojo btn-volver"><-- Volver a la Cartelera</a>
     </div>
 
     <div class="info-pelicula tarjeta-clasica">
@@ -164,13 +171,13 @@
         <p><strong>Sala:</strong> <span th:text="${p.sala}"></span></p>
     </div>
 
-    <div style="display: flex; justify-content: space-between; gap: 10px; margin-top: 10px;">
-        <a href="/dulceria" class="btn-rojo" style="flex:1; text-align:center;">Ir a la Dulcería</a>
-        <a href="/boleta" class="btn-rojo" style="flex:1; text-align:center;">Finalizar Compra</a>
-    </div>
-
+</div> <div class="botones-finales">
+    <a href="/cartelera" class="btn-rojo btn-volver"><-- Volver a la Cartelera</a>
+    <a href="/dulceria" class="btn-rojo">Ir a la Dulcería --></a>
+    <button type="submit" form="boletaForm" class="btn-rojo">Finalizar Compra</button>
 
 </div>
+
 
 <script>
     const filas = 5;

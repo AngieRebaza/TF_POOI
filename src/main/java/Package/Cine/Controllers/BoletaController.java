@@ -15,11 +15,11 @@ public class BoletaController {
     @Autowired
     private ServicioWebCine servicioWebCine;
 
-    @GetMapping("/boleta")
-    public String mostrarBoleta(Model model) {
-       // double montoTotal
+   // @GetMapping("/boleta")
+    //public String mostrarBoleta(Model model) {
+        // double montoTotal
 
 
     }
-}
+
 

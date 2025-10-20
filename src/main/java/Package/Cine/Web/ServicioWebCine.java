@@ -11,6 +11,10 @@ public class ServicioWebCine {
     private LinkedHashMap<String, Productos> productos;
     private List<BoletaResumen> boleta;
     private List<Productos> productosSeleccionados;
+    private Set<String> butacasSeleccionadas;
+    private String peliculaSelccionada;
+    private String usarioNombre;
+    private String usarioDNI;
 
     public ServicioWebCine() {
         this.cartelera = new ArrayList<>();
@@ -18,6 +22,7 @@ public class ServicioWebCine {
         this.productos = new LinkedHashMap<>();
         this.boleta = new ArrayList<>();
         this.productosSeleccionados = new ArrayList<>();
+        this.butacasSeleccionadas = new HashSet<>();
 
         datosPeliculas();
         datoSalas();
@@ -53,7 +58,7 @@ public class ServicioWebCine {
 
     public double calcularTotalDulceria() {
         double total = 0.0;
-        for (Productos p : productos.values()) {
+        for (Productos p : productosSeleccionados) { //me voy a matar
             total += p.getPrecioSnack();
         }
         return total;
@@ -87,8 +92,6 @@ public class ServicioWebCine {
         productosSeleccionados.add(p);
 
     }
-
-    public void
 
 //por ahora no funciona xd dejenlo ahí quiero ver si se puede hacer una compra despues y que las butacas ya compradas no se puedan seleccionar
     public void registrarCompra(BoletaResumen nuevaboleta) {
