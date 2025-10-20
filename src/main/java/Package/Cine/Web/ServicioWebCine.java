@@ -64,14 +64,6 @@ public class ServicioWebCine {
         return total;
     }
 
-    public double calcularMontoTotal(Set<String> butacasSeleccionadas) {
-        double precioEntradas = butacasSeleccionadas.size() * 15.0;
-        double precioDulceria = calcularTotalDulceria();
-        return precioEntradas + precioDulceria;
-    }
-
-
-
     public List<PeliculasCartelera> getCartelera() {
         return cartelera;
     }
