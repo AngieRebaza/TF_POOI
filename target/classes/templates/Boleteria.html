@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Boletería</title>
-
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lora:wght@400;700&family=Montserrat:wght@700&display=swap');
 
@@ -16,7 +15,7 @@
             line-height: 1.6;
         }
         h1 {
-            font-family: 'Playfair+Display', serif;
+            font-family: 'Playfair Display', serif;
             text-align: center;
             color: #8B0000;
             font-size: 2.5em;
@@ -25,7 +24,7 @@
             margin-bottom: 30px;
         }
         h2 {
-            font-family: 'Playfair+Display', serif;
+            font-family: 'Playfair Display', serif;
             color: #333;
             margin-top: 0;
         }
@@ -91,9 +90,8 @@
             font-size: 1.1em;
         }
         .info-pelicula p strong {
-            color: #8b0000;
+            color: #8B0000;
         }
-
 
         .butacas {
             display: grid;
@@ -136,12 +134,11 @@
             flex-direction: column;
             gap: 10px;
         }
-
     </style>
 </head>
 <body>
 
-<h1> Boletería </h1>
+<h1>Boletería</h1>
 
 <div class="wrapper-principal">
 
@@ -151,33 +148,31 @@
             <label>Entradas estándar (s/12):</label>
             <input type="number" name="entradas" id="entradas" min="1" max="20" value="1" required>
 
-            <label>Entradas para niños o adultos Mayores (s/8):</label>
+            <label>Entradas para niños o adultos mayores (s/8):</label>
             <input type="number" name="entradasDescuento" id="entradasDescuento" min="0" max="20">
 
-            <h3>Selecciona las butacas: </h3>
-            <div id="seatGrid" class="butacas"></div>
+            <h3>Selecciona las butacas:</h3>
+            <div id="seatGrid" class="butacas" th:data-ocupadas="${butacasOcupadas}"></div>
 
             <input type="hidden" name="butacasSeleccionada" id="butacasSeleccionadas">
-
         </form>
-
     </div>
 
-    <div class="info-pelicula tarjeta-clasica">
-        <h2 th:text="${p.titulo}"></h2>
-        <p><strong>Trama:</strong> <span th:text="${p.trama}"></span></p>
-        <p><strong>Duración:</strong> <span th:text="${p.duracionMinutos}"></span> minutos</p>
-        <p><strong>Horario:</strong> <span th:text="${p.horario}"></span></p>
-        <p><strong>Sala:</strong> <span th:text="${p.sala}"></span></p>
+    <div class="info-pelicula tarjeta-clasica" th:object="${p}">
+        <h2 th:text="*{titulo}"></h2>
+        <p><strong>Trama:</strong> <span th:text="*{trama}"></span></p>
+        <p><strong>Duración:</strong> <span th:text="*{duracionMinutos}"></span> minutos</p>
+        <p><strong>Horario:</strong> <span th:text="*{horario}"></span></p>
+        <p><strong>Sala:</strong> <span th:text="*{sala}"></span></p>
     </div>
-
-</div> <div class="botones-finales">
-    <a href="/cartelera" class="btn-rojo btn-volver"><-- Volver a la Cartelera</a>
-    <a href="/dulceria" class="btn-rojo">Ir a la Dulcería --></a>
-    <button type="submit" form="boletaForm" class="btn-rojo">Finalizar Compra</button>
 
 </div>
 
+<div class="botones-finales">
+    <a href="/cartelera" class="btn-rojo btn-volver"><-- Volver a la Cartelera</a>
+    <a href="/dulceria" class="btn-rojo">Ir a la Dulcería --></a>
+    <button type="submit" form="boletaForm" class="btn-rojo">Finalizar Compra</button>
+</div>
 
 <script>
     const filas = 5;
@@ -185,14 +180,22 @@
     const seatGrid = document.getElementById("seatGrid");
     const seleccionadas = [];
 
+    const ocupadasData = seatGrid.dataset.ocupadas;
+    const ocupadas = ocupadasData ? ocupadasData.split(",") : [];
+
     const inputEntradas = document.getElementById("entradas");
     const inputDescuento = document.getElementById("entradasDescuento");
+
     for (let i = 0; i < filas; i++) {
         for (let j = 1; j <= columnas; j++) {
             const seat = document.createElement("div");
             const codigo = String.fromCharCode(65 + i) + j;
             seat.textContent = codigo;
             seat.classList.add("butaca");
+
+            if (ocupadas.includes(codigo)) {
+                seat.classList.add("ocupado");
+            }
 
             seat.addEventListener("click", () => {
                 const maxEntradas = (parseInt(inputEntradas.value) || 0) + (parseInt(inputDescuento.value) || 0);
@@ -206,7 +209,7 @@
                     seat.classList.add("seleccionado");
                     seleccionadas.push(codigo);
                 } else {
-                    alert("Ya seleccionaste todas tus butacas (" + maxEntradas + "). Ajusta la cantidad de entradas si deseas más.");
+                    alert("Ya seleccionaste todas tus butacas (" + maxEntradas + ").");
                 }
 
                 document.getElementById("butacasSeleccionadas").value = seleccionadas.join(",");
@@ -216,5 +219,6 @@
         }
     }
 </script>
+
 </body>
 </html>

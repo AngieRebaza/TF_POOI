@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import Package.Cine.Web.ServicioWebCine;
 import Package.Cine.Objetos.PeliculasCartelera;
 
+import java.util.Arrays;
+
 @Controller
 @RequestMapping("/boleteria")
 
@@ -23,6 +25,7 @@ public class BoleteriaController {
                 .orElse(null);
 
         model.addAttribute("p", pelicula);
+
         return "boleteria";
     }
 

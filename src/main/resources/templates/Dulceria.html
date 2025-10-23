@@ -42,6 +42,7 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column;
+            align-items: center;
             justify-content: space-between;
         }
 
@@ -66,6 +67,8 @@
             width: 100%;
             font-weight: bold;
             cursor: pointer;
+  margin-top: 10px;
+
         }
 
         .btn-agregar:hover {
@@ -92,6 +95,36 @@
             }
         }
 
+        .cant-selector {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+        }
+
+        .cant-btn {
+          width: 32px;
+          height: 32px;
+          border: 1px solid #ccc;
+          background: #fff;
+          border-radius: 4px;
+          font-weight: bold;
+          cursor: pointer;
+          transition: background .2s;
+
+
+        }
+
+        .cant-btn:hover {
+          background: #f2f2f2;
+        }
+
+        .cant-value {
+          min-width: 28px;
+          text-align: center;
+          font-weight: bold;
+        }
+
     </style>
 
 </head>
@@ -99,15 +132,42 @@
 <h1> Dulcería: Bebidas y Snacks :)</h1>
 
 <div class="productos-container">
-    <div th:each="p : ${p.values()}" class="producto">
+    <div th:each="p : ${p.values()}" class="producto" th:object="${p}">
         <div>
-            <h2 th:text="${p.nombreSnack}"></h2>
-            <p>Precio: S/ <span th:text="${p.precioSnack}"></span></p>
+            <h2 th:text="*{nombreSnack}"></h2>
+            <p>Precio: s/ <span th:text="*{precioSnack}"></span></p>
         </div>
-        <button class="btn-agregar">Agregar</button>
+
+        <div class="cant-selector">
+            <button class="cant-btn" data-selector="-1">-</button>
+            <span class="cant-value">0</span>
+            <button class="cant-btn" data-selector="+1">+</button>
+        </div>
+
+        <button class="btn-agregar"
+                th:data-nombre="*{nombreSnack}"
+                th:data-precio="*{precioSnack}">Agregar al carrito</button>
+
     </div>
 </div>
 <a href="/boleta" class="btn-volver">Finalizar Compra</a>
+
+<script>
+    document.querySelectorAll('.cant-selector').forEach(group => {
+      const menos = group.querySelector('[data-selector="-1"]');
+      const mas   = group.querySelector('[data-selector="+1"]');
+      const valor = group.querySelector('.cant-value');
+
+      const update = selector => {
+        let v = parseInt(valor.textContent, 10) + selector;
+        if (v < 0) v = 0;
+        valor.textContent = v;
+      };
+
+      menos.addEventListener('click', () => update(-1));
+      mas  .addEventListener('click', () => update(1));
+    });
+</script>
 
 </body>
 </html>

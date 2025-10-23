@@ -3,66 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>Boleta de Compra</title>
-    <style>
-        body {
-            font-family: 'Lora', serif;
-            background-color: #FFF8E7;
-            color: #3D3D3D;
-            padding: 30px;
-        }
 
-        h1 {
-            text-align: center;
-            color: #8B0000;
-        }
-
-        .boleta {
-            background-color: #fff;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            max-width: 500px;
-            margin: 30px auto;
-        }
-
-        p {
-            font-size: 1.1em;
-            margin-bottom: 10px;
-        }
-
-        .total {
-            font-weight: bold;
-            font-size: 1.2em;
-            color: #8B0000;
-            margin-top: 20px;
-        }
-
-        .btn-volver {
-            display: block;
-            text-align: center;
-            background-color: #8B0000;
-            color: white;
-            border-radius: 5px;
-            padding: 12px;
-            margin: 30px auto 0;
-            width: 250px;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-    </style>
 </head>
 <body>
 <h1>Boleta de Compra</h1>
 
-<div class="boleta">
-    <p><strong>Cliente:</strong> <span th:text="${boleta.nombreCliente}"></span></p>
-    <p><strong>DNI:</strong> <span th:text="${boleta.DNI}"></span></p>
-    <p><strong>N° Sala:</strong> <span th:text="${boleta.numeroSala}"></span></p>
-    <p><strong>Butacas:</strong> <span th:text="${boleta.codigoButacas}"></span></p>
-    <p class="total">Total a pagar: S/ <span th:text="${boleta.monto}"></span></p>
+<div class="boleta" th:object="${b}">
+    <p><strong>Cliente:</strong> <span th:text="*{nombreCliente}"></span></p>
+    <p><strong>DNI:</strong> <span th:text="*{DNI}"></span></p>
+    <p><strong>Sala:</strong> <span th:text="*{numeroSala}"></span></p>
+    <p><strong>Butacas:</strong> <span th:text="*{codigoButacas}"></span></p>
+    <p class="total">Total a pagar: s/ <span th:text="*{monto}"></span></p>
 </div>
 
-<a href="/" class="btn-volver">Volver al Inicio</a>
 </body>
 </html>
